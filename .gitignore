@@ -1,0 +1,86 @@
+# Build Folders
+bin/
+obj/
+out/
+
+# User-Specific Files
+*.user
+*.userosscache
+*.suo
+*.unsuccessfulbuild
+*.rsuser
+*.userprefs
+
+# Logs
+*.log
+*.tlog
+
+# IDE Files
+.vscode/
+.idea/
+.vs/
+*.sln.docstates
+
+# Auto-generated Files
+*.g.i.cs
+*.g.cs
+GeneratedFiles/
+
+# Packages and Dependencies
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.dll
+*.exe
+*.pdb
+
+# Backup Files
+*_backup*/
+*_backup.*
+
+# Publish Files
+*.Publish.xml
+
+# Rider and MonoDevelop
+.idea/
+*.pidb
+*.swp
+*.bak
+*.tmp
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+# Uncomment if NuGet package restore is not enabled for the project
+# packages/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio specific
+.vs/
+*.vcxproj.user
+*.psess
+
+# Entity Framework Migrations
+Migrations/
+
+# Configuration Files
+appsettings.json
+appsettings.*.json
+
+# Secrets
+secrets.json
