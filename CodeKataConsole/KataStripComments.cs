@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using static System.Net.Mime.MediaTypeNames;
+using System.Text.RegularExpressions;
 
 namespace CodeKataConsole
 {
@@ -39,6 +39,13 @@ namespace CodeKataConsole
             string[] lines = text.Split(new[] { "\n" }, StringSplitOptions.None);
             lines = lines.Select(x => x.Split(commentSymbols, StringSplitOptions.None).First().TrimEnd()).ToArray();
             return string.Join("\n", lines);
+        }
+
+        public static string StripCommentsWithRegex(string text, string[] commentSymbols)
+        {
+            var escapedSymbols = commentSymbols.Select(Regex.Escape);
+            var pattern = $"\\s*(?:{string.Join("|", escapedSymbols)}).*";
+            return Regex.Replace(text, pattern, "").TrimEnd();
         }
     }
 }
