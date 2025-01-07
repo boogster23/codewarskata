@@ -69,6 +69,10 @@ namespace CodeKataConsole
             Console.WriteLine($"Kata Int to String Parser: {KataParseIntReloaded.ParseInt("six hundred sixty-six thousand six hundred sixty-six")}");
             Console.WriteLine($"Kata Int to String Parser: {KataParseIntReloaded.ParseInt("Two hundred Forty-six")}");
             Console.WriteLine($"Kata Int to String Parser: {KataParseIntReloaded.ParseInt("Zero")}");
+
+            Console.WriteLine($"Kata Next Big Number (2071): {KataNextBigNumber.NextBiggerNumber(2071)}");
+            Console.WriteLine($"Kata Strip Comments: {KataStripComments.StripComments(
+                "a \n b \nc ", ["#", "$"])}");
         }
 
         public static string PrinterError(String s)
