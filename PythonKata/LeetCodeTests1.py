@@ -1,6 +1,8 @@
 import unittest
 from typing import List, Optional
 
+from SinglyListNode import SinglyListNode
+
 def two_sum(nums: List[int], target: int) -> List[int]:
     nums_map = {}
     
@@ -42,6 +44,37 @@ def container_with_most_water_height(nums) -> int:
 
     return max_area
 
+def shifting_linked_list(node, k):
+    if not node or k == 0:
+        return node
+
+    length = 1
+    tail = node
+
+    while tail.next:
+        tail = tail.next
+        length += 1
+
+    k = k % length
+
+    if k == 0:
+        return node
+
+    if k < 0:
+        k = k + length
+
+    numTailPosition = length - k
+    newTail = node
+
+    for _ in range(numTailPosition - 1):
+        newTail = newTail.next
+
+    newHead = newTail.next
+    newTail.next = None
+    tail.next = node
+
+    return newHead
+
 class TestTwoSum(unittest.TestCase):
     def test_two_sum(self):
         nums = [15, 7, 11, 2]
@@ -71,6 +104,24 @@ class TestTwoSum(unittest.TestCase):
         nums = [1]
         result = container_with_most_water_height(nums)
         self.assertEqual(result, 0)
+
+    def test_shifting_linklist(self):
+        node1 = SinglyListNode(1)
+        node2 = SinglyListNode(2)
+        node3 = SinglyListNode(3)
+        node4 = SinglyListNode(4)
+        node5 = SinglyListNode(5)
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        node4.next = node5
+
+        new_head = shifting_linked_list(node1, 2)
+        self.assertEqual(new_head.value, 4)
+        self.assertEqual(new_head.next.value, 5)
+        self.assertEqual(new_head.next.next.value, 1)
+        self.assertEqual(new_head.next.next.next.value, 2)
+        self.assertEqual(new_head.next.next.next.next.value, 3)
 
 if __name__ == "__main__":
     unittest.main()

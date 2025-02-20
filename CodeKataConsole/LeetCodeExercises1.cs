@@ -81,6 +81,9 @@ namespace CodeKataConsole
 
             k = k % length;
 
+            if (k == 0) // full circle
+                return head;
+
             if (k < 0)
             {
                 k = k + length;
@@ -198,6 +201,26 @@ namespace CodeKataConsole
             Assert.That(shiftedHead.Next.Next.Value, Is.EqualTo(5));
             Assert.That(shiftedHead.Next.Next.Next.Value, Is.EqualTo(1));
             Assert.That(shiftedHead.Next.Next.Next.Next.Value, Is.EqualTo(2));
+            Assert.That(shiftedHead.Next.Next.Next.Next.Next, Is.Null);
+        }
+
+        [Test]
+        public void ShiftLinkedListTestShiftFullCircle()
+        {
+            var head = new Node(1);
+            head.Next = new Node(2);
+            head.Next.Next = new Node(3);
+            head.Next.Next.Next = new Node(4);
+            head.Next.Next.Next.Next = new Node(5);
+
+            Node shiftedHead = LeetCodeExercises1.ShiftingLinkedList(head, 5);
+
+            Assert.That(shiftedHead != null, Is.True);
+            Assert.That(shiftedHead.Value, Is.EqualTo(1));
+            Assert.That(shiftedHead.Next.Value, Is.EqualTo(2));
+            Assert.That(shiftedHead.Next.Next.Value, Is.EqualTo(3));
+            Assert.That(shiftedHead.Next.Next.Next.Value, Is.EqualTo(4));
+            Assert.That(shiftedHead.Next.Next.Next.Next.Value, Is.EqualTo(5));
             Assert.That(shiftedHead.Next.Next.Next.Next.Next, Is.Null);
         }
     }

@@ -84,3 +84,4 @@ appsettings.*.json
 
 # Secrets
 secrets.json
+/PythonKata/__pycache__
