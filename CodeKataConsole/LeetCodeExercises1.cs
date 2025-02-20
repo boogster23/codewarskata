@@ -65,6 +65,40 @@ namespace CodeKataConsole
 
             return maxArea;
         }
+
+        public static Node? ShiftingLinkedList(Node head, int k)
+        {
+            if (head == null ||  k == 0)
+                return head;
+
+            int length = 1;
+            Node tail = head;
+            while (tail.Next != null)
+            {
+                tail = tail.Next;
+                length++;
+            }
+
+            k = k % length;
+
+            if (k < 0)
+            {
+                k = k + length;
+            }
+
+            var newTailPosition = length - k;
+            Node newTail = head;
+            for (int i = 1; i < newTailPosition; i++)
+            {
+                newTail = newTail.Next;
+            }
+
+            Node newHead = newTail.Next;
+            newTail.Next = null;
+            tail.Next = head;
+
+            return newHead;
+        }
     }
 
 
@@ -125,6 +159,46 @@ namespace CodeKataConsole
             var result = LeetCodeExercises1.ContainerWithMostWater(nums);
 
             Assert.That(result.Equals(0), Is.True);
+        }
+
+        [Test]
+        public void ShiftLinkedListTestShiftRight()
+        {
+            var head = new Node(1);
+            head.Next = new Node(2);
+            head.Next.Next = new Node(3);
+            head.Next.Next.Next = new Node(4);
+            head.Next.Next.Next.Next = new Node(5);
+
+            Node shiftedHead = LeetCodeExercises1.ShiftingLinkedList(head, 2);
+
+            Assert.That(shiftedHead != null, Is.True);
+            Assert.That(shiftedHead.Value, Is.EqualTo(4));
+            Assert.That(shiftedHead.Next.Value, Is.EqualTo(5));
+            Assert.That(shiftedHead.Next.Next.Value, Is.EqualTo(1));
+            Assert.That(shiftedHead.Next.Next.Next.Value, Is.EqualTo(2));
+            Assert.That(shiftedHead.Next.Next.Next.Next.Value, Is.EqualTo(3));
+            Assert.That(shiftedHead.Next.Next.Next.Next.Next, Is.Null);
+        }
+
+        [Test]
+        public void ShiftLinkedListTestShiftLeft()
+        {
+            var head = new Node(1);
+            head.Next = new Node(2);
+            head.Next.Next = new Node(3);
+            head.Next.Next.Next = new Node(4);
+            head.Next.Next.Next.Next = new Node(5);
+
+            Node shiftedHead = LeetCodeExercises1.ShiftingLinkedList(head, -2);
+
+            Assert.That(shiftedHead != null, Is.True);
+            Assert.That(shiftedHead.Value, Is.EqualTo(3));
+            Assert.That(shiftedHead.Next.Value, Is.EqualTo(4));
+            Assert.That(shiftedHead.Next.Next.Value, Is.EqualTo(5));
+            Assert.That(shiftedHead.Next.Next.Next.Value, Is.EqualTo(1));
+            Assert.That(shiftedHead.Next.Next.Next.Next.Value, Is.EqualTo(2));
+            Assert.That(shiftedHead.Next.Next.Next.Next.Next, Is.Null);
         }
     }
 }

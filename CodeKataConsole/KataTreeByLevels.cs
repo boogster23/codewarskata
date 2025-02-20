@@ -62,6 +62,7 @@
     {
         public Node Left;
         public Node Right;
+        public Node Next;
         public int Value;
 
         public Node(Node l, Node r, int v)
@@ -70,5 +71,11 @@
             Right = r;
             Value = v;
         }
+
+        public Node(int value)
+        {
+            this.Value = value;
+        }
+
     }
 }
