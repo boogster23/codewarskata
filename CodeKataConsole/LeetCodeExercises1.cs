@@ -4,6 +4,23 @@ namespace CodeKataConsole
 {
     public class LeetCodeExercises1
     {
+        public static int[] TwoSumBruteForce(int[] nums, int target)
+        {
+            for (int i = 0; i < nums.Length; i++) 
+            {
+                for (int j = i; j < nums.Length; j++)
+                {
+                    var currentSum = nums[j] + nums[i];
+                    if (currentSum == target)
+                    {
+                        return [nums[i], nums[j]];
+                    }
+                }
+            }
+
+            return [];
+        }
+
         public static int[] TwoSum(int[] nums, int target)
         {
             var numsMap = new Dictionary<int, int>();
@@ -108,6 +125,17 @@ namespace CodeKataConsole
     [TestFixture]
     public class LeetCodeExercises1Tests
     {
+        [Test]
+        public void TwoSumTestBruteForce()
+        {
+            var nums = new int[] { 15, 7, 11, 2 };
+            var target = 9;
+            var result = LeetCodeExercises1.TwoSumBruteForce(nums, target);
+
+            Assert.That(result.Contains(7), Is.True);
+            Assert.That(result.Contains(2), Is.True);
+        }
+
         [Test]
         public void TwoSumTest()
         {

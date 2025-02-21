@@ -1,7 +1,17 @@
 import unittest
-from typing import List, Optional
+from typing import List
 
 from SinglyListNode import SinglyListNode
+
+def two_sum_brute_force(nums, target):
+    for i in range(len(nums)):
+        for j in range(i, len(nums)):
+            current_sum = nums[i] + nums[j]
+            if current_sum == target:
+                return [nums[i], nums[j]]
+
+    return []
+
 
 def two_sum(nums: List[int], target: int) -> List[int]:
     nums_map = {}
@@ -44,12 +54,12 @@ def container_with_most_water_height(nums) -> int:
 
     return max_area
 
-def shifting_linked_list(node, k):
-    if not node or k == 0:
-        return node
+def shifting_linked_list(head, k):
+    if not head or k == 0:
+        return head
 
     length = 1
-    tail = node
+    tail = head
 
     while tail.next:
         tail = tail.next
@@ -58,24 +68,33 @@ def shifting_linked_list(node, k):
     k = k % length
 
     if k == 0:
-        return node
+        return head
 
     if k < 0:
         k = k + length
 
     numTailPosition = length - k
-    newTail = node
+    newTail = head
 
     for _ in range(numTailPosition - 1):
         newTail = newTail.next
 
     newHead = newTail.next
     newTail.next = None
-    tail.next = node
+    tail.next = head
 
     return newHead
 
 class TestTwoSum(unittest.TestCase):
+    def test_two_sum_brute_force(self):
+        nums = [15, 7, 11, 2]
+        target = 9
+        result = two_sum_brute_force(nums, target)
+        
+        self.assertIsNotNone(result)
+        self.assertIn(7, result)
+        self.assertIn(2, result)
+
     def test_two_sum(self):
         nums = [15, 7, 11, 2]
         target = 9
@@ -100,7 +119,7 @@ class TestTwoSum(unittest.TestCase):
         result = container_with_most_water_height(nums)
         self.assertEqual(result, 49)
 
-    def test_container_with_most_water_height_brute_force(self):
+    def test_container_with_most_water_height_brute_force_zerp(self):
         nums = [1]
         result = container_with_most_water_height(nums)
         self.assertEqual(result, 0)
