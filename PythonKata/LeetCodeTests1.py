@@ -95,6 +95,14 @@ class TestTwoSum(unittest.TestCase):
         self.assertIn(7, result)
         self.assertIn(2, result)
 
+    def test_two_sum_brute_force_empty(self):
+        nums = [15]
+        target = 9
+        result = two_sum_brute_force(nums, target)
+        
+        self.assertIsNotNone(result)
+        self.assertEqual(len(result), 0)
+
     def test_two_sum(self):
         nums = [15, 7, 11, 2]
         target = 9
@@ -103,6 +111,14 @@ class TestTwoSum(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertIn(7, result)
         self.assertIn(2, result)
+
+    def test_two_sum_empty(self):
+        nums = [15]
+        target = 9
+        result = two_sum(nums, target)
+        
+        self.assertIsNotNone(result)
+        self.assertEqual(len(result), 0)
 
     def test_container_with_most_water_height_brute_force(self):
         nums = [1, 8, 6, 2, 5, 4, 8, 3, 7]
@@ -124,7 +140,7 @@ class TestTwoSum(unittest.TestCase):
         result = container_with_most_water_height(nums)
         self.assertEqual(result, 0)
 
-    def test_shifting_linklist(self):
+    def test_shifting_linklist_right(self):
         node1 = SinglyListNode(1)
         node2 = SinglyListNode(2)
         node3 = SinglyListNode(3)
@@ -141,6 +157,42 @@ class TestTwoSum(unittest.TestCase):
         self.assertEqual(new_head.next.next.value, 1)
         self.assertEqual(new_head.next.next.next.value, 2)
         self.assertEqual(new_head.next.next.next.next.value, 3)
+
+    def test_shifting_linklist_left(self):
+        node1 = SinglyListNode(1)
+        node2 = SinglyListNode(2)
+        node3 = SinglyListNode(3)
+        node4 = SinglyListNode(4)
+        node5 = SinglyListNode(5)
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        node4.next = node5
+
+        new_head = shifting_linked_list(node1, -2)
+        self.assertEqual(new_head.value, 3)
+        self.assertEqual(new_head.next.value, 4)
+        self.assertEqual(new_head.next.next.value, 5)
+        self.assertEqual(new_head.next.next.next.value, 1)
+        self.assertEqual(new_head.next.next.next.next.value, 2)
+
+    def test_shifting_linklist_circular(self):
+        node1 = SinglyListNode(1)
+        node2 = SinglyListNode(2)
+        node3 = SinglyListNode(3)
+        node4 = SinglyListNode(4)
+        node5 = SinglyListNode(5)
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        node4.next = node5
+
+        new_head = shifting_linked_list(node1, 5)
+        self.assertEqual(new_head.value, 1)
+        self.assertEqual(new_head.next.value, 2)
+        self.assertEqual(new_head.next.next.value, 3)
+        self.assertEqual(new_head.next.next.next.value, 4)
+        self.assertEqual(new_head.next.next.next.next.value, 5)
 
 if __name__ == "__main__":
     unittest.main()
