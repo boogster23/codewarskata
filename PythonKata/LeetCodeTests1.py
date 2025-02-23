@@ -13,7 +13,7 @@ def two_sum_brute_force(nums, target):
     return []
 
 
-def two_sum(nums: List[int], target: int) -> List[int]:
+def two_sum(nums, target):
     nums_map = {}
     
     for i, num in enumerate(nums):
@@ -23,7 +23,7 @@ def two_sum(nums: List[int], target: int) -> List[int]:
         
         nums_map[num] = i
     
-    return nums_map
+    return {}
 
 def container_with_most_water_height_brute_force(nums) -> int:
     max_area = 0
@@ -84,6 +84,16 @@ def shifting_linked_list(head, k):
     tail.next = head
 
     return newHead
+
+def trapping_rain_water_brute_force(heights):
+    total_water = 0
+    for i in range(1, len(heights) - 1):
+        left_max = max(heights[:i])
+        right_max = max(heights[i+1:])
+        current_height = heights[i]
+        water = min(left_max, right_max) - current_height
+        total_water += max(water, 0)
+    return total_water
 
 class TestTwoSum(unittest.TestCase):
     def test_two_sum_brute_force(self):
@@ -193,6 +203,21 @@ class TestTwoSum(unittest.TestCase):
         self.assertEqual(new_head.next.next.value, 3)
         self.assertEqual(new_head.next.next.next.value, 4)
         self.assertEqual(new_head.next.next.next.next.value, 5)
+
+    def test_trapping_rain_water_brute_force_1(self):
+        heights = [0,1,0,2,1,0,1,3,2,1,2,1]
+        result = trapping_rain_water_brute_force(heights)
+        self.assertEqual(result, 6)
+
+    def test_trapping_rain_water_brute_force_2(self):
+        heights = [0,1,0,2,1,0,3,1,0,1,2]
+        result = trapping_rain_water_brute_force(heights)
+        self.assertEqual(result, 8)
+
+    def test_trapping_rain_water_brute_force_zero(self):
+        heights = [0,1,0]
+        result = trapping_rain_water_brute_force(heights)
+        self.assertEqual(result, 0)
 
 if __name__ == "__main__":
     unittest.main()

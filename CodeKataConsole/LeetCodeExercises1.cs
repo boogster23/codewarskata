@@ -4,9 +4,10 @@ namespace CodeKataConsole
 {
     public class LeetCodeExercises1
     {
+        #region TwoSum
         public static int[] TwoSumBruteForce(int[] nums, int target)
         {
-            for (int i = 0; i < nums.Length; i++) 
+            for (int i = 0; i < nums.Length; i++)
             {
                 for (int j = i; j < nums.Length; j++)
                 {
@@ -38,7 +39,9 @@ namespace CodeKataConsole
 
             return [];
         }
+        #endregion
 
+        #region ContainerWithMostWater
         public static int ContainerWithMostWaterBruteForce(int[] nums)
         {
             int maxArea = 0;
@@ -82,10 +85,12 @@ namespace CodeKataConsole
 
             return maxArea;
         }
+        #endregion
 
+        #region ShiftingLinkedList
         public static Node? ShiftingLinkedList(Node head, int k)
         {
-            if (head == null ||  k == 0)
+            if (head == null || k == 0)
                 return head;
 
             int length = 1;
@@ -119,12 +124,73 @@ namespace CodeKataConsole
 
             return newHead;
         }
+        #endregion
+
+        #region TrappingRainWater
+        public static int TrappingRainWaterBruteForce(int[] heights)
+        {
+            int totalWater = 0;
+            for (int i = 0; i < heights.Length; i++)
+            {
+                int leftMax = 0;
+                int rightMax = 0;
+                for (int j = i; j >= 0; j--)
+                {
+                    leftMax = Math.Max(leftMax, heights[j]);
+                }
+                for (int j = i; j < heights.Length; j++)
+                {
+                    rightMax = Math.Max(rightMax, heights[j]);
+                }
+                totalWater += Math.Min(leftMax, rightMax) - heights[i];
+            }
+            return totalWater;
+        }
+
+        public static int TrappingRainWater(int[] heights)
+        {
+            int left = 0;
+            int right = heights.Length - 1;
+            int leftMax = 0;
+            int rightMax = 0;
+            int totalWater = 0;
+            while (left < right)
+            {
+                if (heights[left] < heights[right])
+                {
+                    if (heights[left] >= leftMax)
+                    {
+                        leftMax = heights[left];
+                    }
+                    else
+                    {
+                        totalWater += leftMax - heights[left];
+                    }
+                    left++;
+                }
+                else
+                {
+                    if (heights[right] >= rightMax)
+                    {
+                        rightMax = heights[right];
+                    }
+                    else
+                    {
+                        totalWater += rightMax - heights[right];
+                    }
+                    right--;
+                }
+            }
+            return totalWater;
+        }
+        #endregion
     }
 
 
     [TestFixture]
     public class LeetCodeExercises1Tests
     {
+        #region TwoSum
         [Test]
         public void TwoSumTestBruteForce()
         {
@@ -146,7 +212,9 @@ namespace CodeKataConsole
             Assert.That(result.Contains(7), Is.True);
             Assert.That(result.Contains(2), Is.True);
         }
+        #endregion
 
+        #region ContainerWithMostWater
         [Test]
         public void ContainerWithMostWaterBruteForceTest()
         {
@@ -191,7 +259,9 @@ namespace CodeKataConsole
 
             Assert.That(result.Equals(0), Is.True);
         }
+        #endregion
 
+        #region ShiftingLinkedList
         [Test]
         public void ShiftLinkedListTestShiftRight()
         {
@@ -251,5 +321,30 @@ namespace CodeKataConsole
             Assert.That(shiftedHead.Next.Next.Next.Next.Value, Is.EqualTo(5));
             Assert.That(shiftedHead.Next.Next.Next.Next.Next, Is.Null);
         }
+        #endregion
+
+        #region TrappingRainWater
+        [Test]
+        public void TrappingRainWaterBruteForceTest_1()
+        {
+            var heights = new int[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
+            var result = LeetCodeExercises1.TrappingRainWaterBruteForce(heights);
+            Assert.That(result.Equals(6), Is.True);
+        }
+
+        public void TrappingRainWaterBruteForceTest_2()
+        {
+            var heights = new int[] { 0, 1, 0, 2, 1, 0, 3, 1, 0, 1, 2 };
+            var result = LeetCodeExercises1.TrappingRainWaterBruteForce(heights);
+            Assert.That(result.Equals(8), Is.True);
+        }
+        public void TrappingRainWaterBruteForceTest_zero()
+        {
+            var heights = new int[] { 0, 1, 0 };
+            var result = LeetCodeExercises1.TrappingRainWaterBruteForce(heights);
+            Assert.That(result.Equals(0), Is.True);
+        }
+
+        #endregion
     }
 }
