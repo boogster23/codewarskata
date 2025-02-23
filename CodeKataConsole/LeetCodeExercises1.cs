@@ -332,12 +332,15 @@ namespace CodeKataConsole
             Assert.That(result.Equals(6), Is.True);
         }
 
+        [Test]
         public void TrappingRainWaterBruteForceTest_2()
         {
             var heights = new int[] { 0, 1, 0, 2, 1, 0, 3, 1, 0, 1, 2 };
             var result = LeetCodeExercises1.TrappingRainWaterBruteForce(heights);
             Assert.That(result.Equals(8), Is.True);
         }
+
+        [Test]
         public void TrappingRainWaterBruteForceTest_zero()
         {
             var heights = new int[] { 0, 1, 0 };
