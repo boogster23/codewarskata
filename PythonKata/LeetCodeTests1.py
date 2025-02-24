@@ -95,6 +95,30 @@ def trapping_rain_water_brute_force(heights):
         total_water += max(water, 0)
     return total_water
 
+def trapping_rain_water(heights):
+    pLeft = 0
+    pRight = len(heights) - 1
+    maxLeft = 0
+    maxRight = 0
+    totalWater = 0
+
+    while pLeft < pRight:
+        if heights[pLeft] < heights[pRight]:
+            if maxLeft > heights[pLeft]:
+                totalWater += maxLeft - heights[pLeft]
+            else:
+                maxLeft = heights[pLeft]
+
+            pLeft += 1
+        else:
+            if maxRight > heights[pRight]:
+                totalWater += maxRight - heights[pRight]
+            else:
+                maxRight = heights[pRight]
+            pRight -= 1
+
+    return totalWater
+
 class TestTwoSum(unittest.TestCase):
     def test_two_sum_brute_force(self):
         nums = [15, 7, 11, 2]
@@ -217,6 +241,21 @@ class TestTwoSum(unittest.TestCase):
     def test_trapping_rain_water_brute_force_zero(self):
         heights = [0,1,0]
         result = trapping_rain_water_brute_force(heights)
+        self.assertEqual(result, 0)
+
+    def test_trapping_rain_water_1(self):
+        heights = [0,1,0,2,1,0,1,3,2,1,2,1]
+        result = trapping_rain_water(heights)
+        self.assertEqual(result, 6)
+
+    def test_trapping_rain_water_2(self):
+        heights = [0,1,0,2,1,0,3,1,0,1,2]
+        result = trapping_rain_water(heights)
+        self.assertEqual(result, 8)
+
+    def test_trapping_rain_water_zero(self):
+        heights = [0,1,0]
+        result = trapping_rain_water(heights)
         self.assertEqual(result, 0)
 
 if __name__ == "__main__":

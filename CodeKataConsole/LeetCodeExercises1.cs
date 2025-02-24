@@ -132,56 +132,60 @@ namespace CodeKataConsole
             int totalWater = 0;
             for (int i = 0; i < heights.Length; i++)
             {
-                int leftMax = 0;
-                int rightMax = 0;
+                int maxLeft = 0;
+                int maxRight = 0;
                 for (int j = i; j >= 0; j--)
                 {
-                    leftMax = Math.Max(leftMax, heights[j]);
+                    maxLeft = Math.Max(maxLeft, heights[j]);
                 }
                 for (int j = i; j < heights.Length; j++)
                 {
-                    rightMax = Math.Max(rightMax, heights[j]);
+                    maxRight = Math.Max(maxRight, heights[j]);
                 }
-                totalWater += Math.Min(leftMax, rightMax) - heights[i];
+                totalWater += Math.Min(maxLeft, maxRight) - heights[i];
             }
             return totalWater;
         }
 
         public static int TrappingRainWater(int[] heights)
         {
-            int left = 0;
-            int right = heights.Length - 1;
-            int leftMax = 0;
-            int rightMax = 0;
+            int pLeft = 0;
+            int pRight = heights.Length - 1;
+            int maxLeft = 0;
+            int maxRight = 0;
             int totalWater = 0;
-            while (left < right)
+
+            while (pLeft < pRight)
             {
-                if (heights[left] < heights[right])
+                if (heights[pLeft] < heights[pRight])
                 {
-                    if (heights[left] >= leftMax)
+                    if (maxLeft > heights[pLeft])
                     {
-                        leftMax = heights[left];
+                        totalWater += maxLeft - heights[pLeft];
                     }
                     else
                     {
-                        totalWater += leftMax - heights[left];
+                        maxLeft = heights[pLeft];
                     }
-                    left++;
+
+                    pLeft++;
                 }
                 else
                 {
-                    if (heights[right] >= rightMax)
+                    if (maxRight > heights[pRight])
                     {
-                        rightMax = heights[right];
+                        totalWater += maxRight - heights[pRight];
                     }
                     else
                     {
-                        totalWater += rightMax - heights[right];
+                        maxRight = heights[pRight];
                     }
-                    right--;
+
+                    pRight--;
                 }
             }
-            return totalWater;
+
+            return totalWater;         
         }
         #endregion
     }
@@ -345,6 +349,30 @@ namespace CodeKataConsole
         {
             var heights = new int[] { 0, 1, 0 };
             var result = LeetCodeExercises1.TrappingRainWaterBruteForce(heights);
+            Assert.That(result.Equals(0), Is.True);
+        }
+
+        [Test]
+        public void TrappingRainWaterTest_1()
+        {
+            var heights = new int[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
+            var result = LeetCodeExercises1.TrappingRainWater(heights);
+            Assert.That(result.Equals(6), Is.True);
+        }
+
+        [Test]
+        public void TrappingRainWaterTest_2()
+        {
+            var heights = new int[] { 0, 1, 0, 2, 1, 0, 3, 1, 0, 1, 2 };
+            var result = LeetCodeExercises1.TrappingRainWater(heights);
+            Assert.That(result.Equals(8), Is.True);
+        }
+
+        [Test]
+        public void TrappingRainWaterTest_zero()
+        {
+            var heights = new int[] { 0, 1, 0 };
+            var result = LeetCodeExercises1.TrappingRainWater(heights);
             Assert.That(result.Equals(0), Is.True);
         }
 
