@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace CodeKataConsole
 {
@@ -63,23 +64,23 @@ namespace CodeKataConsole
         public static int ContainerWithMostWater(int[] nums)
         {
             int maxArea = 0;
-            int a = 0;
-            int b = nums.Length - 1;
+            int pLeft = 0;
+            int pRight = nums.Length - 1;
 
-            while (b > a)
+            while (pRight > pLeft)
             {
-                var height = Math.Min(nums[a], nums[b]);
-                var width = b - a;
+                var height = Math.Min(nums[pLeft], nums[pRight]);
+                var width = pRight - pLeft;
                 var currentArea = height * width;
                 maxArea = Math.Max(currentArea, maxArea);
 
-                if (nums[a] <= nums[b])
+                if (nums[pLeft] <= nums[pRight])
                 {
-                    a++;
+                    pLeft++;
                 }
                 else
                 {
-                    b--;
+                    pRight--;
                 }
             }
 
@@ -187,6 +188,53 @@ namespace CodeKataConsole
 
             return totalWater;         
         }
+        #endregion
+
+        #region LargestAreaHistogram
+        public static int LargestAreaHistogramBruteForce(int[] heights)
+        {
+            int maxArea = 0;
+            for (int i = 0; i < heights.Length; i++)
+            {
+                for (int j = i; j < heights.Length; j++)
+                {
+                    var minHeight = int.MaxValue;
+                    for (int k = i; k <= j; k++)
+                    {
+                        minHeight = Math.Min(minHeight, heights[k]);
+                    }
+
+                    maxArea = Math.Max(maxArea, minHeight * (j - i + 1));
+                }
+            }
+
+            return maxArea;
+        }
+
+        public static int FindingLargestAreaHistogram(int[] heights)
+        {
+            var maxArea = 0;
+            var extendedHeights = new int[heights.Length + 1];
+            var stack = new Stack<int>();
+
+            Array.Copy(heights, extendedHeights, heights.Length);
+
+            for (int i = 0; i < extendedHeights.Length; i++)
+            {
+                while (stack.Count > 0 && extendedHeights[stack.Peek()] > extendedHeights[i])
+                {
+                    int top = stack.Pop();
+                    int width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+                    int area = extendedHeights[top] * width;
+                    maxArea = Math.Max(maxArea, area);
+                }
+
+                stack.Push(i);
+            }
+
+            return maxArea;
+        }
+
         #endregion
     }
 
@@ -376,6 +424,24 @@ namespace CodeKataConsole
             Assert.That(result.Equals(0), Is.True);
         }
 
+        #endregion
+
+        #region LargestAreaHistogram
+        [Test]
+        public void FindingLargestAreaHistogramBruteForceTest_1()
+        {
+            var heights = new int[] { 2, 1, 5, 6, 2, 3 };
+            var result = LeetCodeExercises1.LargestAreaHistogramBruteForce(heights);
+            Assert.That(result.Equals(10), Is.True);
+        }
+
+        [Test]
+        public void FindingLargestAreaHistogramTest_1()
+        {
+            var heights = new int[] { 2, 1, 5, 6, 2, 3 };
+            var result = LeetCodeExercises1.FindingLargestAreaHistogram(heights);
+            Assert.That(result.Equals(10), Is.True);
+        }
         #endregion
     }
 }

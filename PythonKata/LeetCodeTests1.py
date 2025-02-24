@@ -119,6 +119,36 @@ def trapping_rain_water(heights):
 
     return totalWater
 
+def largest_rectangle_histogram_brute_force(heights):
+    max_area = 0
+    n = len(heights)
+
+    for i in range(n):
+        for j in range(i, n):
+            min_height = float('inf')
+            for k in range(i, j + 1):
+                min_height = min(min_height, heights[k])
+
+            area = min_height * (j - i + 1)
+            max_area = max(max_area, area)
+
+    return max_area
+
+def largest_rectangle_histogram(heights):
+    max_area = 0
+    heights = heights + [0]
+    stack = []
+   
+    for i, height in enumerate(heights):
+        while stack and heights[stack[-1]] > height:
+            top = stack.pop()
+            width = i if not stack else i - stack[-1] - 1
+            area = heights[top] * width
+            max_area = max(max_area, area)
+        stack.append(i)
+
+    return max_area    
+
 class TestTwoSum(unittest.TestCase):
     def test_two_sum_brute_force(self):
         nums = [15, 7, 11, 2]
@@ -257,6 +287,16 @@ class TestTwoSum(unittest.TestCase):
         heights = [0,1,0]
         result = trapping_rain_water(heights)
         self.assertEqual(result, 0)
+
+    def test_largest_rectangle_histogram_brute_force(self):
+        heights = [2,1,5,6,2,3]
+        result = largest_rectangle_histogram_brute_force(heights)
+        self.assertEqual(result, 10)
+
+    def test_largest_rectangle_histogram(self):
+        heights = [2,1,5,6,2,3]
+        result = largest_rectangle_histogram(heights)
+        self.assertEqual(result, 10)
 
 if __name__ == "__main__":
     unittest.main()
