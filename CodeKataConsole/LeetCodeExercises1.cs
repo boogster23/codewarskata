@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System.Runtime.InteropServices.Marshalling;
 
 namespace CodeKataConsole
 {
