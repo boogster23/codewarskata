@@ -4,6 +4,11 @@ import unittest
 import io
 import sys
 
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
 def print_binary(n):
     if n <= 0:
         return
@@ -16,6 +21,36 @@ def print_binary(n):
         print(current)
         q.put(current * 10)
         q.put(current * 10 + 1)
+
+def has_matching_parentheses(s):
+    stack = []
+    for c in s:
+        if c == '(':
+            stack.append(c)
+
+        if c == ')':
+            if len(stack) == 0:
+                return False
+            stack.pop()
+
+    return len(stack) == 0
+
+def linked_list_cycle_using_hash(head):
+    if head is None:
+        return False
+
+    hash_set = set()
+    current = head
+
+    while current is not None:
+        if current in hash_set:
+            return True
+
+        hash_set.add(current)
+        current = current.next
+
+    return False
+
 
 class basic_algorithms_tests(unittest.TestCase):
     def test_print_binary(self):
@@ -36,6 +71,31 @@ class basic_algorithms_tests(unittest.TestCase):
             sys.stdout = sys.__stdout__
 
             self.assertEqual(captured_output.getvalue(), "")
+
+    def test_has_matching_parentheses(self):
+        self.assertEqual(has_matching_parentheses("()"), True)
+        self.assertEqual(has_matching_parentheses("()()"), True)
+        self.assertEqual(has_matching_parentheses("((((()))))"), True)
+        self.assertEqual(has_matching_parentheses("(((())))"), True)
+        self.assertEqual(has_matching_parentheses("((AA"), False)
+
+    def test_linked_list_cycle_using_hash(self):
+        head = Node(1)
+        head.next = Node(2)
+        head.next.next = Node(3)
+        head.next.next.next = Node(4)
+        head.next.next.next.next = head.next
+        self.assertEqual(linked_list_cycle_using_hash(head), True)
+
+    def test_linked_list_cycle_using_hash_no_cycle(self):
+        head = Node(1)
+        head.next = Node(2)
+        head.next.next = Node(3)
+        head.next.next.next = Node(4)
+        self.assertEqual(linked_list_cycle_using_hash(head), False)
+
+    def test_linked_list_cycle_using_hash_empty_list(self):
+        self.assertEqual(linked_list_cycle_using_hash(None), False)
 
 if __name__ == '__main__':
     unittest.main()
