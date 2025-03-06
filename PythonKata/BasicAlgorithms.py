@@ -51,6 +51,22 @@ def linked_list_cycle_using_hash(head):
 
     return False
 
+def is_palindrome_brute_force(teststr):
+    temp = teststr.lower()
+
+    newstr = ""
+    for c in temp:
+        if c.isalnum():
+            newstr += c
+
+    reversestr = ""
+    strindx = len(newstr) - 1
+
+    while (strindx >= 0):
+        reversestr += newstr[strindx]
+        strindx -= 1
+
+    return newstr == reversestr        
 
 class basic_algorithms_tests(unittest.TestCase):
     def test_print_binary(self):
@@ -96,6 +112,14 @@ class basic_algorithms_tests(unittest.TestCase):
 
     def test_linked_list_cycle_using_hash_empty_list(self):
         self.assertEqual(linked_list_cycle_using_hash(None), False)
+
+    def test_is_palindrome_brute_force(self):
+        teststr = "kayak"
+        self.assertTrue(is_palindrome_brute_force(teststr))
+
+    def test_is_palindrome_brute_force_false(self):
+        teststr = "amazing"
+        self.assertFalse(is_palindrome_brute_force(teststr))
 
 if __name__ == '__main__':
     unittest.main()
