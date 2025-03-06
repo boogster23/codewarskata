@@ -66,7 +66,7 @@ def is_palindrome_brute_force(teststr):
         reversestr += newstr[strindx]
         strindx -= 1
 
-    return newstr == reversestr        
+    return newstr == reversestr
 
 class basic_algorithms_tests(unittest.TestCase):
     def test_print_binary(self):
