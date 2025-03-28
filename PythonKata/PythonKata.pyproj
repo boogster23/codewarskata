@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BasicAlgorithms.py" />
     <Compile Include="LeetCodeTests1.py" />
     <Compile Include="SinglyListNode.py" />
   </ItemGroup>

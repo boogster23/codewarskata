@@ -4,9 +4,10 @@ namespace CodeKataConsole
 {
     public class LeetCodeExercises1
     {
+        #region TwoSum
         public static int[] TwoSumBruteForce(int[] nums, int target)
         {
-            for (int i = 0; i < nums.Length; i++) 
+            for (int i = 0; i < nums.Length; i++)
             {
                 for (int j = i; j < nums.Length; j++)
                 {
@@ -38,7 +39,9 @@ namespace CodeKataConsole
 
             return [];
         }
+        #endregion
 
+        #region ContainerWithMostWater
         public static int ContainerWithMostWaterBruteForce(int[] nums)
         {
             int maxArea = 0;
@@ -60,32 +63,34 @@ namespace CodeKataConsole
         public static int ContainerWithMostWater(int[] nums)
         {
             int maxArea = 0;
-            int a = 0;
-            int b = nums.Length - 1;
+            int pLeft = 0;
+            int pRight = nums.Length - 1;
 
-            while (b > a)
+            while (pRight > pLeft)
             {
-                var height = Math.Min(nums[a], nums[b]);
-                var width = b - a;
+                var height = Math.Min(nums[pLeft], nums[pRight]);
+                var width = pRight - pLeft;
                 var currentArea = height * width;
                 maxArea = Math.Max(currentArea, maxArea);
 
-                if (nums[a] <= nums[b])
+                if (nums[pLeft] <= nums[pRight])
                 {
-                    a++;
+                    pLeft++;
                 }
                 else
                 {
-                    b--;
+                    pRight--;
                 }
             }
 
             return maxArea;
         }
+        #endregion
 
+        #region ShiftingLinkedList
         public static Node? ShiftingLinkedList(Node head, int k)
         {
-            if (head == null ||  k == 0)
+            if (head == null || k == 0)
                 return head;
 
             int length = 1;
@@ -119,12 +124,124 @@ namespace CodeKataConsole
 
             return newHead;
         }
+        #endregion
+
+        #region TrappingRainWater
+        public static int TrappingRainWaterBruteForce(int[] heights)
+        {
+            int totalWater = 0;
+            for (int i = 0; i < heights.Length; i++)
+            {
+                int maxLeft = 0;
+                int maxRight = 0;
+                for (int j = i; j >= 0; j--)
+                {
+                    maxLeft = Math.Max(maxLeft, heights[j]);
+                }
+                for (int j = i; j < heights.Length; j++)
+                {
+                    maxRight = Math.Max(maxRight, heights[j]);
+                }
+                totalWater += Math.Min(maxLeft, maxRight) - heights[i];
+            }
+            return totalWater;
+        }
+
+        public static int TrappingRainWater(int[] heights)
+        {
+            int pLeft = 0;
+            int pRight = heights.Length - 1;
+            int maxLeft = 0;
+            int maxRight = 0;
+            int totalWater = 0;
+
+            while (pLeft < pRight)
+            {
+                if (heights[pLeft] < heights[pRight])
+                {
+                    if (maxLeft > heights[pLeft])
+                    {
+                        totalWater += maxLeft - heights[pLeft];
+                    }
+                    else
+                    {
+                        maxLeft = heights[pLeft];
+                    }
+
+                    pLeft++;
+                }
+                else
+                {
+                    if (maxRight > heights[pRight])
+                    {
+                        totalWater += maxRight - heights[pRight];
+                    }
+                    else
+                    {
+                        maxRight = heights[pRight];
+                    }
+
+                    pRight--;
+                }
+            }
+
+            return totalWater;         
+        }
+        #endregion
+
+        #region LargestAreaHistogram
+        public static int LargestAreaHistogramBruteForce(int[] heights)
+        {
+            int maxArea = 0;
+            for (int i = 0; i < heights.Length; i++)
+            {
+                for (int j = i; j < heights.Length; j++)
+                {
+                    var minHeight = int.MaxValue;
+                    for (int k = i; k <= j; k++)
+                    {
+                        minHeight = Math.Min(minHeight, heights[k]);
+                    }
+
+                    maxArea = Math.Max(maxArea, minHeight * (j - i + 1));
+                }
+            }
+
+            return maxArea;
+        }
+
+        public static int FindingLargestAreaHistogram(int[] heights)
+        {
+            var maxArea = 0;
+            var extendedHeights = new int[heights.Length + 1];
+            var stack = new Stack<int>();
+
+            Array.Copy(heights, extendedHeights, heights.Length);
+
+            for (int i = 0; i < extendedHeights.Length; i++)
+            {
+                while (stack.Count > 0 && extendedHeights[stack.Peek()] > extendedHeights[i])
+                {
+                    int top = stack.Pop();
+                    int width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+                    int area = extendedHeights[top] * width;
+                    maxArea = Math.Max(maxArea, area);
+                }
+
+                stack.Push(i);
+            }
+
+            return maxArea;
+        }
+
+        #endregion
     }
 
 
     [TestFixture]
     public class LeetCodeExercises1Tests
     {
+        #region TwoSum
         [Test]
         public void TwoSumTestBruteForce()
         {
@@ -146,7 +263,9 @@ namespace CodeKataConsole
             Assert.That(result.Contains(7), Is.True);
             Assert.That(result.Contains(2), Is.True);
         }
+        #endregion
 
+        #region ContainerWithMostWater
         [Test]
         public void ContainerWithMostWaterBruteForceTest()
         {
@@ -191,7 +310,9 @@ namespace CodeKataConsole
 
             Assert.That(result.Equals(0), Is.True);
         }
+        #endregion
 
+        #region ShiftingLinkedList
         [Test]
         public void ShiftLinkedListTestShiftRight()
         {
@@ -251,5 +372,75 @@ namespace CodeKataConsole
             Assert.That(shiftedHead.Next.Next.Next.Next.Value, Is.EqualTo(5));
             Assert.That(shiftedHead.Next.Next.Next.Next.Next, Is.Null);
         }
+        #endregion
+
+        #region TrappingRainWater
+        [Test]
+        public void TrappingRainWaterBruteForceTest_1()
+        {
+            var heights = new int[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
+            var result = LeetCodeExercises1.TrappingRainWaterBruteForce(heights);
+            Assert.That(result.Equals(6), Is.True);
+        }
+
+        [Test]
+        public void TrappingRainWaterBruteForceTest_2()
+        {
+            var heights = new int[] { 0, 1, 0, 2, 1, 0, 3, 1, 0, 1, 2 };
+            var result = LeetCodeExercises1.TrappingRainWaterBruteForce(heights);
+            Assert.That(result.Equals(8), Is.True);
+        }
+
+        [Test]
+        public void TrappingRainWaterBruteForceTest_zero()
+        {
+            var heights = new int[] { 0, 1, 0 };
+            var result = LeetCodeExercises1.TrappingRainWaterBruteForce(heights);
+            Assert.That(result.Equals(0), Is.True);
+        }
+
+        [Test]
+        public void TrappingRainWaterTest_1()
+        {
+            var heights = new int[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
+            var result = LeetCodeExercises1.TrappingRainWater(heights);
+            Assert.That(result.Equals(6), Is.True);
+        }
+
+        [Test]
+        public void TrappingRainWaterTest_2()
+        {
+            var heights = new int[] { 0, 1, 0, 2, 1, 0, 3, 1, 0, 1, 2 };
+            var result = LeetCodeExercises1.TrappingRainWater(heights);
+            Assert.That(result.Equals(8), Is.True);
+        }
+
+        [Test]
+        public void TrappingRainWaterTest_zero()
+        {
+            var heights = new int[] { 0, 1, 0 };
+            var result = LeetCodeExercises1.TrappingRainWater(heights);
+            Assert.That(result.Equals(0), Is.True);
+        }
+
+        #endregion
+
+        #region LargestAreaHistogram
+        [Test]
+        public void FindingLargestAreaHistogramBruteForceTest_1()
+        {
+            var heights = new int[] { 2, 1, 5, 6, 2, 3 };
+            var result = LeetCodeExercises1.LargestAreaHistogramBruteForce(heights);
+            Assert.That(result.Equals(10), Is.True);
+        }
+
+        [Test]
+        public void FindingLargestAreaHistogramTest_1()
+        {
+            var heights = new int[] { 2, 1, 5, 6, 2, 3 };
+            var result = LeetCodeExercises1.FindingLargestAreaHistogram(heights);
+            Assert.That(result.Equals(10), Is.True);
+        }
+        #endregion
     }
 }
